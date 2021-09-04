@@ -1,13 +1,28 @@
+const path = require('path')
 const express = require('express')
 const app = express()
-var morgan = require('morgan')
+const morgan = require('morgan')
 const port = 3000
+const handlebars  = require('express-handlebars');
 
+// HTTP logger
 app.use(morgan('combined'))
 
-app.get('/tin-tuc', (req, res) => {
-  res.send('Hello World!')
+//template engine
+app.engine('hbs', handlebars({
+  extname: '.hbs' // chu y khong phai = nhe
+}));
+app.set('view engine', 'hbs');
+app.set('views',path.join(__dirname, 'resources/views'));
+
+app.get('/', (req, res) => {
+  res.render('home');
 })
+
+app.get('/news', (req, res) => {
+  res.render('news');
+})
+
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
